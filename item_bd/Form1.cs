@@ -51,7 +51,7 @@ namespace item_bd
             try
             {
                 string user = login_box.Text;
-                string password = pass_box.Text;// проблема с паролем пароль не правельно записывается
+                string password = pass_box.Text;
               
                 conect_db = new BD_CONNECT(ip, port, "test", user, password, ishost);
                 conect_db.ConectToDB();
