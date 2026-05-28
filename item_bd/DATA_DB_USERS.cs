@@ -8,6 +8,7 @@ namespace item_bd
 {
     public class DATA_DB_USERS
     {
+        public int ID { get; set; }
         public string User_name { get; set; }
         public string Password { get; set; }
         public string user_role { get; set; }

@@ -53,7 +53,7 @@ namespace item_bd
                 string user = login_box.Text;
                 string password = pass_box.Text;
               
-                conect_db = new BD_CONNECT(ip, port, "test", user, password, ishost);
+                conect_db = new BD_CONNECT(ip, port, "user", user, password, ishost);
                 conect_db.ConectToDB();
                 if (conect_db.PingPong())
                 {
@@ -76,6 +76,6 @@ namespace item_bd
                 
             }
         }
-        //
+        
     }
 }

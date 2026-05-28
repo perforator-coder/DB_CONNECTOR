@@ -30,12 +30,12 @@ namespace item_bd
             string config = "";
             if (isLocalhost)
             {
-                config = $"Host=localhost;Database={name_DB};Username={login};Password={password}"; 
+                config = $"Host=localhost;Database={name_DB};Username={login};Password={password};Client Encoding=UTF8"; 
 
             }
             else 
             {
-                config = $"Host={IP};Port={port};Database={name_DB};Username={login};Password={password}";
+                config = $"Host={IP};Port={port};Database={name_DB};Username={login};Password={password};Client Encoding=UTF8";
 
             }
 
@@ -59,11 +59,32 @@ namespace item_bd
                 return false;
             }
         }
-        /*public List<DATA_DB_USERS> GetDataUsers()
+        public List<DATA_DB_USERS> GetDataUsers()
         {
-            
+            List<DATA_DB_USERS> list_user = new List<DATA_DB_USERS>();
+            string sql_ms = "SELECT User_name,Password,user_role from user_data";
+            using (var conect = ConectToDB())
+            {
+                conect.Open();
+                using (var cmd = new NpgsqlCommand(sql_ms,conect))
+                {
+                    using (var read = cmd.ExecuteReader())
+                    {
+                        while ( read.Read())
+                        {
+                            DATA_DB_USERS data_user = new DATA_DB_USERS();
+                           // data_user.ID = read.GetInt32(0);
+                            data_user.User_name = read.GetString(0);
+                            data_user.Password = read.GetString(1);
+                            data_user.user_role = read.GetString(2);
+                            list_user.Add(data_user);
+                        }
+                        return list_user;
+                    }
+                }
+            }
         }
-        */
+        
         // тут будут методы для подключения
         // 1 - подключение с данными вверху
         // 2 - получения данных из таблицы
