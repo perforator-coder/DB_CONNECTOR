@@ -8,11 +8,12 @@ namespace item_bd
         private BD_CONNECT conect_db;
         private string APP_path = AppDomain.CurrentDomain.BaseDirectory;
         private bool ishost;
+        private bool isAdmin;
         public Form1()
         {
             InitializeComponent();
             loadconf();
-            // метод подключения к бд с пользователями
+            
         }
         private void loadconf()
         {
@@ -57,10 +58,38 @@ namespace item_bd
                 conect_db.ConectToDB();
                 if (conect_db.PingPong())
                 {
+                    List<DATA_DB_USERS> list_users = conect_db.GetDataUsers();
+                    bool isinDBUsers = false;
+                    foreach (var user_data in list_users)
+                    {
+                        if (user == user_data.User_name && user_data.user_role == "Admin" && password == user_data.Password)
+                        {
+                            isAdmin = true;
+                            isinDBUsers = true;
+                            break;
+                        }
+
+                        else if (user == user_data.User_name && password == user_data.Password)
+                        {
+                            isAdmin = false;
+                            isinDBUsers = true;
+                            break;
+                        }
+                        else 
+                        {
+
+                        }
+                        
+                    }
+                    if (!isinDBUsers)
+                    {
+                        MessageBox.Show("Пользователь не найден!","ERROR: USER NOT FOUND!",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                        return;
+                    }
                     this.Hide();
                     this.ShowInTaskbar = false;
                     this.WindowState = FormWindowState.Minimized;
-                    MAIN_FORM_DB main = new MAIN_FORM_DB(conect_db);
+                    MAIN_FORM_DB main = new MAIN_FORM_DB(conect_db,isAdmin);
                     if (main.ShowDialog() == DialogResult.Cancel)
                     {
                         this.Show();

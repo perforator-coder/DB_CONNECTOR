@@ -14,11 +14,23 @@ namespace item_bd
     {
         private BD_CONNECT DB_con;
         private List<DATA_DB_USERS> list_user;
-        public MAIN_FORM_DB(BD_CONNECT DB_conection)
+        private bool isadmin;
+        private TabPage del_page;
+        public MAIN_FORM_DB(BD_CONNECT DB_conection, bool isAdmin)
         {
             InitializeComponent();
             DB_con = DB_conection;
-            loadData_user();
+            this.isadmin = isAdmin;
+            if (!isAdmin)
+            {
+                del_page = USERS;
+                tabControl1.TabPages.Remove(USERS);
+                // метод подключения и получения данных
+            }
+            else
+            {
+                loadData_user();
+            }
         }
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
@@ -56,5 +68,21 @@ namespace item_bd
         {
 
         }
+
+        private void Data_user_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
+            {
+                Data_user.ClearSelection();
+                Data_user.Rows[e.RowIndex].Selected = true;
+                User_selector.Show(Cursor.Position);
+            }
+        }
+
+        ///План:
+        ///1 - сделать норм меню по правой кнопке мыши по выделеной строке
+        ///2 - сделать форму изменения данных выбраной строки
+        ///3 - сделать таблицу с данными 
+        ///
     }
 }

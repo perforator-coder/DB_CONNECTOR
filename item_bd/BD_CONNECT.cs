@@ -73,7 +73,7 @@ namespace item_bd
                         while ( read.Read())
                         {
                             DATA_DB_USERS data_user = new DATA_DB_USERS();
-                           // data_user.ID = read.GetInt32(0);
+                           
                             data_user.User_name = read.GetString(0);
                             data_user.Password = read.GetString(1);
                             data_user.user_role = read.GetString(2);
@@ -84,10 +84,14 @@ namespace item_bd
                 }
             }
         }
-        
+       
         // тут будут методы для подключения
-        // 1 - подключение с данными вверху
-        // 2 - получения данных из таблицы
+        
+        /// 1 - получения данных из таблицы не пользователей 
+        /// 2 - метод обновления данных 
+        /// 3 - метод записи данных
+        /// 4 - метод удаления выбраных данных
+
             
     }
 }
