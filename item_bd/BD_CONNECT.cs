@@ -62,7 +62,7 @@ namespace item_bd
         public List<DATA_DB_USERS> GetDataUsers()
         {
             List<DATA_DB_USERS> list_user = new List<DATA_DB_USERS>();
-            string sql_ms = "SELECT User_name,Password,user_role from user_data";
+            string sql_ms = "SELECT User_name,Password,user_role,ID from user_data";
             using (var conect = ConectToDB())
             {
                 conect.Open();
@@ -77,6 +77,7 @@ namespace item_bd
                             data_user.User_name = read.GetString(0);
                             data_user.Password = read.GetString(1);
                             data_user.user_role = read.GetString(2);
+                            data_user.ID = read.GetInt32(3);
                             list_user.Add(data_user);
                         }
                         return list_user;
@@ -84,7 +85,42 @@ namespace item_bd
                 }
             }
         }
-       
+        public void InsertNewData(List<DATA_DB_USERS> new_data)
+        {
+            string sql_cmd = "UPDATE User_data SET User_name = @User_name, Password = @Password, user_role = @user_role WHERE id = @id";
+            using (var conn = ConectToDB())
+            {
+
+                conn.Open();
+                using (var trans = conn.BeginTransaction()) {
+                    try
+                    {
+                        using (var cmd = new NpgsqlCommand(sql_cmd, conn, trans))
+                        {
+                            cmd.Parameters.Add("@User_name", NpgsqlTypes.NpgsqlDbType.Text);
+                            cmd.Parameters.Add("@Password", NpgsqlTypes.NpgsqlDbType.Text);
+                            cmd.Parameters.Add("@user_role", NpgsqlTypes.NpgsqlDbType.Text);
+                            cmd.Parameters.Add("@id", NpgsqlTypes.NpgsqlDbType.Integer);
+                            foreach (var item in new_data)
+                            {
+                                cmd.Parameters["@User_name"].Value = item.User_name;
+                                cmd.Parameters["@Password"].Value = item.Password;
+                                cmd.Parameters["@user_role"].Value = item.user_role;
+                                cmd.Parameters["@id"].Value = item.ID;
+                                cmd.ExecuteNonQuery();
+                            }
+                            trans.Commit();
+                            MessageBox.Show("Сохранено!");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        trans.Rollback();
+                        MessageBox.Show($"ОШИБКА СОХРАНЕНИЯ: {ex.Message} ");
+                    }
+                }
+            }
+        }
         // тут будут методы для подключения
         
         /// 1 - получения данных из таблицы не пользователей 

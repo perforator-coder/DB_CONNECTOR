@@ -16,6 +16,7 @@ namespace item_bd
         private List<DATA_DB_USERS> list_user;
         private bool isadmin;
         private TabPage del_page;
+        
         public MAIN_FORM_DB(BD_CONNECT DB_conection, bool isAdmin)
         {
             InitializeComponent();
@@ -75,7 +76,26 @@ namespace item_bd
             {
                 Data_user.ClearSelection();
                 Data_user.Rows[e.RowIndex].Selected = true;
+                
                 User_selector.Show(Cursor.Position);
+            }
+        }
+
+        private void изменитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Data_user.CurrentRow != null)
+            {
+                DATA_DB_USERS edit_row = Data_user.CurrentRow.DataBoundItem as DATA_DB_USERS;
+                EDIT_USER edit_form_user = new EDIT_USER(edit_row);
+                edit_form_user.ShowDialog();
+                DATA_DB_USERS edited_row = edit_form_user.GETDATA;
+                edit_row.User_name = edited_row.User_name;
+                edit_row.Password = edited_row.Password;
+                edit_row.user_role = edited_row.user_role;
+                Data_user.RefreshEdit();
+                Data_user.Refresh();
+                list_user = Data_user.DataSource as List<DATA_DB_USERS>;
+                DB_con.InsertNewData(list_user);
             }
         }
 

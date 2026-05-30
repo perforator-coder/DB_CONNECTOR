@@ -36,6 +36,7 @@
             Data_user = new DataGridView();
             User_selector = new ContextMenuStrip(components);
             вРАЗРАБОТКЕToolStripMenuItem = new ToolStripMenuItem();
+            изменитьToolStripMenuItem = new ToolStripMenuItem();
             tabControl1.SuspendLayout();
             DATA.SuspendLayout();
             USERS.SuspendLayout();
@@ -99,15 +100,22 @@
             // 
             // User_selector
             // 
-            User_selector.Items.AddRange(new ToolStripItem[] { вРАЗРАБОТКЕToolStripMenuItem });
+            User_selector.Items.AddRange(new ToolStripItem[] { вРАЗРАБОТКЕToolStripMenuItem, изменитьToolStripMenuItem });
             User_selector.Name = "User_selector";
-            User_selector.Size = new Size(161, 26);
+            User_selector.Size = new Size(181, 70);
             // 
             // вРАЗРАБОТКЕToolStripMenuItem
             // 
             вРАЗРАБОТКЕToolStripMenuItem.Name = "вРАЗРАБОТКЕToolStripMenuItem";
             вРАЗРАБОТКЕToolStripMenuItem.Size = new Size(180, 22);
             вРАЗРАБОТКЕToolStripMenuItem.Text = "В РАЗРАБОТКЕ!";
+            // 
+            // изменитьToolStripMenuItem
+            // 
+            изменитьToolStripMenuItem.Name = "изменитьToolStripMenuItem";
+            изменитьToolStripMenuItem.Size = new Size(180, 22);
+            изменитьToolStripMenuItem.Text = "Изменить";
+            изменитьToolStripMenuItem.Click += изменитьToolStripMenuItem_Click;
             // 
             // MAIN_FORM_DB
             // 
@@ -136,5 +144,6 @@
         private Label label1;
         private ContextMenuStrip User_selector;
         private ToolStripMenuItem вРАЗРАБОТКЕToolStripMenuItem;
+        private ToolStripMenuItem изменитьToolStripMenuItem;
     }
 }
