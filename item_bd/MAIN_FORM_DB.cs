@@ -13,15 +13,16 @@ namespace item_bd
     public partial class MAIN_FORM_DB : Form
     {
         private BD_CONNECT DB_con;
-        private List<DATA_DB_USERS> list_user;
+        private BindingList<DATA_DB_USERS> list_user;
         private bool isadmin;
         private TabPage del_page;
-        
+
         public MAIN_FORM_DB(BD_CONNECT DB_conection, bool isAdmin)
         {
             InitializeComponent();
             DB_con = DB_conection;
             this.isadmin = isAdmin;
+            Data_user.AllowUserToAddRows = false;
             if (!isAdmin)
             {
                 del_page = USERS;
@@ -74,11 +75,14 @@ namespace item_bd
         {
             if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
             {
+                изменитьToolStripMenuItem.Visible = true;
+                создатьСтрокуToolStripMenuItem.Visible = false;
                 Data_user.ClearSelection();
                 Data_user.Rows[e.RowIndex].Selected = true;
-                
+
                 User_selector.Show(Cursor.Position);
             }
+            
         }
 
         private void изменитьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -86,7 +90,7 @@ namespace item_bd
             if (Data_user.CurrentRow != null)
             {
                 DATA_DB_USERS edit_row = Data_user.CurrentRow.DataBoundItem as DATA_DB_USERS;
-                EDIT_USER edit_form_user = new EDIT_USER(edit_row);
+                EDIT_USER edit_form_user = new EDIT_USER(edit_row, false);
                 edit_form_user.ShowDialog();
                 DATA_DB_USERS edited_row = edit_form_user.GETDATA;
                 edit_row.User_name = edited_row.User_name;
@@ -94,8 +98,35 @@ namespace item_bd
                 edit_row.user_role = edited_row.user_role;
                 Data_user.RefreshEdit();
                 Data_user.Refresh();
-                list_user = Data_user.DataSource as List<DATA_DB_USERS>;
-                DB_con.InsertNewData(list_user);
+                list_user = Data_user.DataSource as BindingList<DATA_DB_USERS>;
+
+            }
+        }
+
+        private void сохранитьВсеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DB_con.InsertNewData(list_user);
+        }
+
+        private void создатьСтрокуToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EDIT_USER get_new_row = new EDIT_USER(null, true);
+            get_new_row.ShowDialog();
+            DATA_DB_USERS added_row = get_new_row.GETDATA;
+            added_row.ID = list_user.Count() + 1;
+            list_user.Add(added_row);
+            Data_user.DataSource = list_user;
+            Data_user.RefreshEdit();
+            Data_user.Refresh();
+        }
+
+        private void Data_user_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                изменитьToolStripMenuItem.Visible = false;
+                создатьСтрокуToolStripMenuItem.Visible = true;
+                User_selector.Show(Cursor.Position);
             }
         }
 

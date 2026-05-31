@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 namespace item_bd
 {
     public partial class Form1 : Form
@@ -58,7 +60,7 @@ namespace item_bd
                 conect_db.ConectToDB();
                 if (conect_db.PingPong())
                 {
-                    List<DATA_DB_USERS> list_users = conect_db.GetDataUsers();
+                    BindingList<DATA_DB_USERS> list_users = conect_db.GetDataUsers();
                     bool isinDBUsers = false;
                     foreach (var user_data in list_users)
                     {

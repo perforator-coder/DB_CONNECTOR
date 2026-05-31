@@ -1,6 +1,7 @@
 ﻿using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,9 +60,9 @@ namespace item_bd
                 return false;
             }
         }
-        public List<DATA_DB_USERS> GetDataUsers()
+        public BindingList<DATA_DB_USERS> GetDataUsers()
         {
-            List<DATA_DB_USERS> list_user = new List<DATA_DB_USERS>();
+            BindingList<DATA_DB_USERS> list_user = new BindingList<DATA_DB_USERS>();
             string sql_ms = "SELECT User_name,Password,user_role,ID from user_data";
             using (var conect = ConectToDB())
             {
@@ -85,9 +86,9 @@ namespace item_bd
                 }
             }
         }
-        public void InsertNewData(List<DATA_DB_USERS> new_data)
+        public void InsertNewData(BindingList<DATA_DB_USERS> new_data)
         {
-            string sql_cmd = "UPDATE User_data SET User_name = @User_name, Password = @Password, user_role = @user_role WHERE id = @id";
+            string sql_cmd = @"INSERT INTO User_data( ID,User_name,Password,user_role) VALUES (@id,@User_name,@Password,@user_role) ON CONFLICT (ID) DO UPDATE SET User_name = EXCLUDED.User_name,Password = EXCLUDED.Password,user_role = EXCLUDED.user_role;";
             using (var conn = ConectToDB())
             {
 
@@ -95,6 +96,7 @@ namespace item_bd
                 using (var trans = conn.BeginTransaction()) {
                     try
                     {
+                        //стоит добавить ключ
                         using (var cmd = new NpgsqlCommand(sql_cmd, conn, trans))
                         {
                             cmd.Parameters.Add("@User_name", NpgsqlTypes.NpgsqlDbType.Text);
@@ -110,13 +112,13 @@ namespace item_bd
                                 cmd.ExecuteNonQuery();
                             }
                             trans.Commit();
-                            MessageBox.Show("Сохранено!");
+                            MessageBox.Show("Все изменения сохранены!","SAVE DATA SUCCSESS!");
                         }
                     }
                     catch (Exception ex)
                     {
                         trans.Rollback();
-                        MessageBox.Show($"ОШИБКА СОХРАНЕНИЯ: {ex.Message} ");
+                        MessageBox.Show($"ОШИБКА СОХРАНЕНИЯ: {ex.Message} ","SAVE DATA FAILURE!");
                     }
                 }
             }
