@@ -77,12 +77,13 @@ namespace item_bd
             {
                 изменитьToolStripMenuItem.Visible = true;
                 создатьСтрокуToolStripMenuItem.Visible = false;
+                удалитьСтрокуToolStripMenuItem.Visible = true;
                 Data_user.ClearSelection();
                 Data_user.Rows[e.RowIndex].Selected = true;
 
                 User_selector.Show(Cursor.Position);
             }
-            
+
         }
 
         private void изменитьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -125,8 +126,22 @@ namespace item_bd
             if (e.Button == MouseButtons.Right)
             {
                 изменитьToolStripMenuItem.Visible = false;
+                удалитьСтрокуToolStripMenuItem.Visible = false;
                 создатьСтрокуToolStripMenuItem.Visible = true;
                 User_selector.Show(Cursor.Position);
+            }
+        }
+
+        private void удалитьСтрокуToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Data_user.CurrentRow != null)
+            {
+                DATA_DB_USERS select_row = Data_user.CurrentRow.DataBoundItem as DATA_DB_USERS;
+
+                Data_user.Rows.RemoveAt(Data_user.SelectedRows[select_row.ID - 1].Index);
+                Data_user.RefreshEdit();
+                Data_user.Refresh();
+
             }
         }
 

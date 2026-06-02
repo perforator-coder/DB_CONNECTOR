@@ -88,6 +88,7 @@ namespace item_bd
         }
         public void InsertNewData(BindingList<DATA_DB_USERS> new_data)
         {
+            string sql_del = "DELETE FROM User_data WHERE ID NOT IN (SELECT unnest(@present_ids));";
             string sql_cmd = @"INSERT INTO User_data( ID,User_name,Password,user_role) VALUES (@id,@User_name,@Password,@user_role) ON CONFLICT (ID) DO UPDATE SET User_name = EXCLUDED.User_name,Password = EXCLUDED.Password,user_role = EXCLUDED.user_role;";
             using (var conn = ConectToDB())
             {
@@ -96,29 +97,67 @@ namespace item_bd
                 using (var trans = conn.BeginTransaction()) {
                     try
                     {
-                        //стоит добавить ключ
-                        using (var cmd = new NpgsqlCommand(sql_cmd, conn, trans))
+                        var CMDDEL = new_data.Select(x => x.ID).ToArray();
+                        using (var cmdDEL = new NpgsqlCommand(sql_del, conn, trans))
                         {
-                            cmd.Parameters.Add("@User_name", NpgsqlTypes.NpgsqlDbType.Text);
-                            cmd.Parameters.Add("@Password", NpgsqlTypes.NpgsqlDbType.Text);
-                            cmd.Parameters.Add("@user_role", NpgsqlTypes.NpgsqlDbType.Text);
-                            cmd.Parameters.Add("@id", NpgsqlTypes.NpgsqlDbType.Integer);
-                            foreach (var item in new_data)
+                            cmdDEL.Parameters.AddWithValue("@present_ids", CMDDEL);
+                            cmdDEL.ExecuteNonQuery();
+                        }
+                        if (new_data.Count > 0)
+                        {
+
+
+                            //стоит добавить ключ
+                            using (var cmd = new NpgsqlCommand(sql_cmd, conn, trans))
                             {
-                                cmd.Parameters["@User_name"].Value = item.User_name;
-                                cmd.Parameters["@Password"].Value = item.Password;
-                                cmd.Parameters["@user_role"].Value = item.user_role;
-                                cmd.Parameters["@id"].Value = item.ID;
-                                cmd.ExecuteNonQuery();
+                                cmd.Parameters.Add("@User_name", NpgsqlTypes.NpgsqlDbType.Text);
+                                cmd.Parameters.Add("@Password", NpgsqlTypes.NpgsqlDbType.Text);
+                                cmd.Parameters.Add("@user_role", NpgsqlTypes.NpgsqlDbType.Text);
+                                cmd.Parameters.Add("@id", NpgsqlTypes.NpgsqlDbType.Integer);
+                                foreach (var item in new_data)
+                                {
+                                    cmd.Parameters["@User_name"].Value = item.User_name;
+                                    cmd.Parameters["@Password"].Value = item.Password;
+                                    cmd.Parameters["@user_role"].Value = item.user_role;
+                                    cmd.Parameters["@id"].Value = item.ID;
+                                    cmd.ExecuteNonQuery();
+                                }
+                                trans.Commit();
+                                MessageBox.Show("Все изменения сохранены!", "SAVE DATA SUCCSESS!");
                             }
-                            trans.Commit();
-                            MessageBox.Show("Все изменения сохранены!","SAVE DATA SUCCSESS!");
                         }
                     }
                     catch (Exception ex)
                     {
                         trans.Rollback();
                         MessageBox.Show($"ОШИБКА СОХРАНЕНИЯ: {ex.Message} ","SAVE DATA FAILURE!");
+                    }
+                }
+            }
+        }
+        public void CreateUsers()
+        {
+            using (var con = ConectToDB())
+            {
+                con.Open();
+                BindingList<DATA_DB_USERS> List_users = GetDataUsers();
+                DATA_DB_USERS Find_user = new DATA_DB_USERS();
+                foreach (var user in List_users)
+                {
+                    
+
+
+                    if (user.user_role == "Admin")
+                    {
+                        // даем право на обе таблици
+                    }
+                    else if (user.user_role == "User")
+                    {
+                        // даем право на использование 1 бд с данными
+                    }
+                    else
+                    {
+                        
                     }
                 }
             }

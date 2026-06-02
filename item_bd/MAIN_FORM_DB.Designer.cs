@@ -39,6 +39,7 @@
             изменитьToolStripMenuItem = new ToolStripMenuItem();
             сохранитьВсеToolStripMenuItem = new ToolStripMenuItem();
             создатьСтрокуToolStripMenuItem = new ToolStripMenuItem();
+            удалитьСтрокуToolStripMenuItem = new ToolStripMenuItem();
             tabControl1.SuspendLayout();
             DATA.SuspendLayout();
             USERS.SuspendLayout();
@@ -103,36 +104,43 @@
             // 
             // User_selector
             // 
-            User_selector.Items.AddRange(new ToolStripItem[] { вРАЗРАБОТКЕToolStripMenuItem, изменитьToolStripMenuItem, сохранитьВсеToolStripMenuItem, создатьСтрокуToolStripMenuItem });
+            User_selector.Items.AddRange(new ToolStripItem[] { вРАЗРАБОТКЕToolStripMenuItem, изменитьToolStripMenuItem, сохранитьВсеToolStripMenuItem, создатьСтрокуToolStripMenuItem, удалитьСтрокуToolStripMenuItem });
             User_selector.Name = "User_selector";
-            User_selector.Size = new Size(161, 92);
+            User_selector.Size = new Size(181, 136);
             // 
             // вРАЗРАБОТКЕToolStripMenuItem
             // 
             вРАЗРАБОТКЕToolStripMenuItem.Name = "вРАЗРАБОТКЕToolStripMenuItem";
-            вРАЗРАБОТКЕToolStripMenuItem.Size = new Size(160, 22);
+            вРАЗРАБОТКЕToolStripMenuItem.Size = new Size(180, 22);
             вРАЗРАБОТКЕToolStripMenuItem.Text = "В РАЗРАБОТКЕ!";
             // 
             // изменитьToolStripMenuItem
             // 
             изменитьToolStripMenuItem.Name = "изменитьToolStripMenuItem";
-            изменитьToolStripMenuItem.Size = new Size(160, 22);
+            изменитьToolStripMenuItem.Size = new Size(180, 22);
             изменитьToolStripMenuItem.Text = "Изменить";
             изменитьToolStripMenuItem.Click += изменитьToolStripMenuItem_Click;
             // 
             // сохранитьВсеToolStripMenuItem
             // 
             сохранитьВсеToolStripMenuItem.Name = "сохранитьВсеToolStripMenuItem";
-            сохранитьВсеToolStripMenuItem.Size = new Size(160, 22);
+            сохранитьВсеToolStripMenuItem.Size = new Size(180, 22);
             сохранитьВсеToolStripMenuItem.Text = "Сохранить все";
             сохранитьВсеToolStripMenuItem.Click += сохранитьВсеToolStripMenuItem_Click;
             // 
             // создатьСтрокуToolStripMenuItem
             // 
             создатьСтрокуToolStripMenuItem.Name = "создатьСтрокуToolStripMenuItem";
-            создатьСтрокуToolStripMenuItem.Size = new Size(160, 22);
+            создатьСтрокуToolStripMenuItem.Size = new Size(180, 22);
             создатьСтрокуToolStripMenuItem.Text = "Создать строку";
             создатьСтрокуToolStripMenuItem.Click += создатьСтрокуToolStripMenuItem_Click;
+            // 
+            // удалитьСтрокуToolStripMenuItem
+            // 
+            удалитьСтрокуToolStripMenuItem.Name = "удалитьСтрокуToolStripMenuItem";
+            удалитьСтрокуToolStripMenuItem.Size = new Size(180, 22);
+            удалитьСтрокуToolStripMenuItem.Text = "Удалить строку";
+            удалитьСтрокуToolStripMenuItem.Click += удалитьСтрокуToolStripMenuItem_Click;
             // 
             // MAIN_FORM_DB
             // 
@@ -164,5 +172,6 @@
         private ToolStripMenuItem изменитьToolStripMenuItem;
         private ToolStripMenuItem сохранитьВсеToolStripMenuItem;
         private ToolStripMenuItem создатьСтрокуToolStripMenuItem;
+        private ToolStripMenuItem удалитьСтрокуToolStripMenuItem;
     }
 }
