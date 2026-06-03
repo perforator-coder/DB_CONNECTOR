@@ -31,7 +31,7 @@
             components = new System.ComponentModel.Container();
             tabControl1 = new TabControl();
             DATA = new TabPage();
-            label1 = new Label();
+            DATA_DB_tabl = new DataGridView();
             USERS = new TabPage();
             Data_user = new DataGridView();
             User_selector = new ContextMenuStrip(components);
@@ -40,11 +40,18 @@
             сохранитьВсеToolStripMenuItem = new ToolStripMenuItem();
             создатьСтрокуToolStripMenuItem = new ToolStripMenuItem();
             удалитьСтрокуToolStripMenuItem = new ToolStripMenuItem();
+            DATA_ITEM_SELECTOR = new ContextMenuStrip(components);
+            сохранитьВсеToolStripMenuItem1 = new ToolStripMenuItem();
+            изменитьСтрокуToolStripMenuItem = new ToolStripMenuItem();
+            добавитьНовуюСтрокуToolStripMenuItem = new ToolStripMenuItem();
+            удалитьСтрокуToolStripMenuItem1 = new ToolStripMenuItem();
             tabControl1.SuspendLayout();
             DATA.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)DATA_DB_tabl).BeginInit();
             USERS.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Data_user).BeginInit();
             User_selector.SuspendLayout();
+            DATA_ITEM_SELECTOR.SuspendLayout();
             SuspendLayout();
             // 
             // tabControl1
@@ -59,7 +66,7 @@
             // 
             // DATA
             // 
-            DATA.Controls.Add(label1);
+            DATA.Controls.Add(DATA_DB_tabl);
             DATA.Location = new Point(4, 24);
             DATA.Name = "DATA";
             DATA.Padding = new Padding(3);
@@ -68,15 +75,18 @@
             DATA.Text = "DATA_DB";
             DATA.UseVisualStyleBackColor = true;
             // 
-            // label1
+            // DATA_DB_tabl
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 36F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            label1.Location = new Point(78, 184);
-            label1.Name = "label1";
-            label1.Size = new Size(634, 65);
-            label1.TabIndex = 0;
-            label1.Text = "UNDER RECONSTRUCTION";
+            DATA_DB_tabl.AllowUserToAddRows = false;
+            DATA_DB_tabl.AllowUserToDeleteRows = false;
+            DATA_DB_tabl.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            DATA_DB_tabl.Dock = DockStyle.Fill;
+            DATA_DB_tabl.Location = new Point(3, 3);
+            DATA_DB_tabl.Name = "DATA_DB_tabl";
+            DATA_DB_tabl.Size = new Size(789, 419);
+            DATA_DB_tabl.TabIndex = 0;
+            DATA_DB_tabl.CellMouseDown += DATA_DB_tabl_CellMouseDown;
+            DATA_DB_tabl.MouseDown += DATA_DB_tabl_MouseDown;
             // 
             // USERS
             // 
@@ -91,6 +101,8 @@
             // 
             // Data_user
             // 
+            Data_user.AllowUserToAddRows = false;
+            Data_user.AllowUserToDeleteRows = false;
             Data_user.AllowUserToOrderColumns = true;
             Data_user.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             Data_user.Dock = DockStyle.Fill;
@@ -106,41 +118,73 @@
             // 
             User_selector.Items.AddRange(new ToolStripItem[] { вРАЗРАБОТКЕToolStripMenuItem, изменитьToolStripMenuItem, сохранитьВсеToolStripMenuItem, создатьСтрокуToolStripMenuItem, удалитьСтрокуToolStripMenuItem });
             User_selector.Name = "User_selector";
-            User_selector.Size = new Size(181, 136);
+            User_selector.Size = new Size(161, 114);
             // 
             // вРАЗРАБОТКЕToolStripMenuItem
             // 
             вРАЗРАБОТКЕToolStripMenuItem.Name = "вРАЗРАБОТКЕToolStripMenuItem";
-            вРАЗРАБОТКЕToolStripMenuItem.Size = new Size(180, 22);
+            вРАЗРАБОТКЕToolStripMenuItem.Size = new Size(160, 22);
             вРАЗРАБОТКЕToolStripMenuItem.Text = "В РАЗРАБОТКЕ!";
             // 
             // изменитьToolStripMenuItem
             // 
             изменитьToolStripMenuItem.Name = "изменитьToolStripMenuItem";
-            изменитьToolStripMenuItem.Size = new Size(180, 22);
+            изменитьToolStripMenuItem.Size = new Size(160, 22);
             изменитьToolStripMenuItem.Text = "Изменить";
             изменитьToolStripMenuItem.Click += изменитьToolStripMenuItem_Click;
             // 
             // сохранитьВсеToolStripMenuItem
             // 
             сохранитьВсеToolStripMenuItem.Name = "сохранитьВсеToolStripMenuItem";
-            сохранитьВсеToolStripMenuItem.Size = new Size(180, 22);
+            сохранитьВсеToolStripMenuItem.Size = new Size(160, 22);
             сохранитьВсеToolStripMenuItem.Text = "Сохранить все";
             сохранитьВсеToolStripMenuItem.Click += сохранитьВсеToolStripMenuItem_Click;
             // 
             // создатьСтрокуToolStripMenuItem
             // 
             создатьСтрокуToolStripMenuItem.Name = "создатьСтрокуToolStripMenuItem";
-            создатьСтрокуToolStripMenuItem.Size = new Size(180, 22);
+            создатьСтрокуToolStripMenuItem.Size = new Size(160, 22);
             создатьСтрокуToolStripMenuItem.Text = "Создать строку";
             создатьСтрокуToolStripMenuItem.Click += создатьСтрокуToolStripMenuItem_Click;
             // 
             // удалитьСтрокуToolStripMenuItem
             // 
             удалитьСтрокуToolStripMenuItem.Name = "удалитьСтрокуToolStripMenuItem";
-            удалитьСтрокуToolStripMenuItem.Size = new Size(180, 22);
+            удалитьСтрокуToolStripMenuItem.Size = new Size(160, 22);
             удалитьСтрокуToolStripMenuItem.Text = "Удалить строку";
             удалитьСтрокуToolStripMenuItem.Click += удалитьСтрокуToolStripMenuItem_Click;
+            // 
+            // DATA_ITEM_SELECTOR
+            // 
+            DATA_ITEM_SELECTOR.Items.AddRange(new ToolStripItem[] { сохранитьВсеToolStripMenuItem1, изменитьСтрокуToolStripMenuItem, добавитьНовуюСтрокуToolStripMenuItem, удалитьСтрокуToolStripMenuItem1 });
+            DATA_ITEM_SELECTOR.Name = "DATA_ITEM_SELECTOR";
+            DATA_ITEM_SELECTOR.Size = new Size(206, 114);
+            // 
+            // сохранитьВсеToolStripMenuItem1
+            // 
+            сохранитьВсеToolStripMenuItem1.Name = "сохранитьВсеToolStripMenuItem1";
+            сохранитьВсеToolStripMenuItem1.Size = new Size(205, 22);
+            сохранитьВсеToolStripMenuItem1.Text = "Сохранить все";
+            // 
+            // изменитьСтрокуToolStripMenuItem
+            // 
+            изменитьСтрокуToolStripMenuItem.Name = "изменитьСтрокуToolStripMenuItem";
+            изменитьСтрокуToolStripMenuItem.Size = new Size(205, 22);
+            изменитьСтрокуToolStripMenuItem.Text = "Изменить строку";
+            изменитьСтрокуToolStripMenuItem.Click += изменитьСтрокуToolStripMenuItem_Click;
+            // 
+            // добавитьНовуюСтрокуToolStripMenuItem
+            // 
+            добавитьНовуюСтрокуToolStripMenuItem.Name = "добавитьНовуюСтрокуToolStripMenuItem";
+            добавитьНовуюСтрокуToolStripMenuItem.Size = new Size(205, 22);
+            добавитьНовуюСтрокуToolStripMenuItem.Text = "Добавить новую строку";
+            добавитьНовуюСтрокуToolStripMenuItem.Click += добавитьНовуюСтрокуToolStripMenuItem_Click;
+            // 
+            // удалитьСтрокуToolStripMenuItem1
+            // 
+            удалитьСтрокуToolStripMenuItem1.Name = "удалитьСтрокуToolStripMenuItem1";
+            удалитьСтрокуToolStripMenuItem1.Size = new Size(205, 22);
+            удалитьСтрокуToolStripMenuItem1.Text = "Удалить строку";
             // 
             // MAIN_FORM_DB
             // 
@@ -153,10 +197,11 @@
             Load += MAIN_FORM_DB_Load;
             tabControl1.ResumeLayout(false);
             DATA.ResumeLayout(false);
-            DATA.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)DATA_DB_tabl).EndInit();
             USERS.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)Data_user).EndInit();
             User_selector.ResumeLayout(false);
+            DATA_ITEM_SELECTOR.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -166,12 +211,17 @@
         private TabPage USERS;
         private DataGridView Data_user;
         private TabPage DATA;
-        private Label label1;
         private ContextMenuStrip User_selector;
         private ToolStripMenuItem вРАЗРАБОТКЕToolStripMenuItem;
         private ToolStripMenuItem изменитьToolStripMenuItem;
         private ToolStripMenuItem сохранитьВсеToolStripMenuItem;
         private ToolStripMenuItem создатьСтрокуToolStripMenuItem;
         private ToolStripMenuItem удалитьСтрокуToolStripMenuItem;
+        private DataGridView DATA_DB_tabl;
+        private ContextMenuStrip DATA_ITEM_SELECTOR;
+        private ToolStripMenuItem сохранитьВсеToolStripMenuItem1;
+        private ToolStripMenuItem изменитьСтрокуToolStripMenuItem;
+        private ToolStripMenuItem добавитьНовуюСтрокуToolStripMenuItem;
+        private ToolStripMenuItem удалитьСтрокуToolStripMenuItem1;
     }
 }

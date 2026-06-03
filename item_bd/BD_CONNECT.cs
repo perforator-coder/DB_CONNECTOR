@@ -135,6 +135,34 @@ namespace item_bd
                 }
             }
         }
+        public BindingList<DATA_BD> GetDataDB()
+        {
+            BindingList<DATA_BD> list_data = new BindingList<DATA_BD>();
+            string sql_ms = "SELECT item_name,count_item,status,ID from DATA_item";
+            using (var conect = ConectToDB())
+            {
+                conect.Open();
+                using (var cmd = new NpgsqlCommand(sql_ms, conect))
+                {
+                    using (var read = cmd.ExecuteReader())
+                    {
+                        while (read.Read())
+                        {
+                            DATA_BD data_DB = new DATA_BD();
+
+                            data_DB.Name_item = read.GetString(0);
+                            data_DB.Item_id = read.GetString(1);
+                            data_DB.count = read.GetInt32(2);
+                            data_DB.status = read.GetString(3);
+                            data_DB.ID = read.GetInt32(4);
+                            list_data.Add(data_DB);
+                        }
+                        return list_data;
+                    }
+                }
+            }
+        }
+
         public void CreateUsers()
         {
             using (var con = ConectToDB())

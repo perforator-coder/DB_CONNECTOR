@@ -21,7 +21,7 @@ namespace item_bd
             if (isnewrow) 
             {
                 this.isnewrow = isnewrow;
-               
+                
             }
             else
             {

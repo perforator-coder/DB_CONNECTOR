@@ -16,6 +16,7 @@ namespace item_bd
         private BindingList<DATA_DB_USERS> list_user;
         private bool isadmin;
         private TabPage del_page;
+        private BindingList<DATA_BD> List_items;
 
         public MAIN_FORM_DB(BD_CONNECT DB_conection, bool isAdmin)
         {
@@ -27,11 +28,13 @@ namespace item_bd
             {
                 del_page = USERS;
                 tabControl1.TabPages.Remove(USERS);
-                // метод подключения и получения данных
+                loadData_item();
+
             }
             else
             {
                 loadData_user();
+                loadData_item();
             }
         }
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -60,6 +63,16 @@ namespace item_bd
             Data_user.Columns["User_name"].HeaderText = "User_name";
             Data_user.Columns["Password"].HeaderText = "password";
             Data_user.Columns["user_role"].HeaderText = "role";
+        }
+        private void loadData_item()
+        {
+            List_items = DB_con.GetDataDB();
+            DATA_DB_tabl.DataSource = List_items;
+            DATA_DB_tabl.Columns["ID"].HeaderText = "ID";
+            DATA_DB_tabl.Columns["Name_item"].HeaderText = "Имя предмета";
+            DATA_DB_tabl.Columns["Item_id"].HeaderText = "Артикул";
+            DATA_DB_tabl.Columns["count"].HeaderText = "Количество";
+            DATA_DB_tabl.Columns["status"].HeaderText = "Статус";
         }
         private void MAIN_FORM_DB_Load(object sender, EventArgs e)
         {
@@ -145,10 +158,40 @@ namespace item_bd
             }
         }
 
-        ///План:
-        ///1 - сделать норм меню по правой кнопке мыши по выделеной строке
-        ///2 - сделать форму изменения данных выбраной строки
-        ///3 - сделать таблицу с данными 
-        ///
+        private void изменитьСтрокуToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DATA_DB_tabl_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
+            {
+                изменитьСтрокуToolStripMenuItem.Visible = true;
+                удалитьСтрокуToolStripMenuItem1.Visible = true;
+                добавитьНовуюСтрокуToolStripMenuItem.Visible = false;
+                DATA_DB_tabl.ClearSelection();
+                DATA_DB_tabl.Rows[e.RowIndex].Selected = true;
+
+                DATA_ITEM_SELECTOR.Show(Cursor.Position);
+            }
+        }
+
+        private void DATA_DB_tabl_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                изменитьСтрокуToolStripMenuItem.Visible = false;
+                удалитьСтрокуToolStripMenuItem1.Visible = false;
+                добавитьНовуюСтрокуToolStripMenuItem.Visible = true;
+                DATA_ITEM_SELECTOR.Show(Cursor.Position);
+            }
+
+        }
+
+        private void добавитьНовуюСтрокуToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
